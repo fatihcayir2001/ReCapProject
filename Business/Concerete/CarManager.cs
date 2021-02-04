@@ -3,6 +3,7 @@ using DataAccess.Abstract;
 using Entites.Concerete;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Business.Concerete
@@ -32,11 +33,20 @@ namespace Business.Concerete
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
+            //var result = from c in Cars
+            //             join b in Brands
+                         //on b.BrandId equals c.BrandId;
+            
         }
 
-        public List<Car> GetById(int carId)
+        public List<Car> GetCarsByBrandId(int brandId)
         {
-            return _carDal.GetById(carId);
+            return _carDal.GetAll(c => c.BrandId == brandId);
+        }
+
+        public List<Car> GetCarsByColorId(int colorId)
+        {
+            return _carDal.GetAll(c => c.ColorId == colorId);
         }
 
         public void UpdateToDb(Car car)

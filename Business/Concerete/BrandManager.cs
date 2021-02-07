@@ -16,14 +16,29 @@ namespace Business.Concerete
             _brandDal = brandDal;
         }
 
-        public Brand GetBrandNameById(int brandId)
+        public void Add(Brand brand)
         {
-            return _brandDal.Get(x => x.BrandId == brandId);
+            _brandDal.Add(brand);
         }
 
-        public List<Brand> GetBrands()
+        public void Delete(Brand brand)
+        {
+            _brandDal.Delete(brand);
+        }
+
+        public List<Brand> GetAll()
         {
             return _brandDal.GetAll();
+        }
+
+        public Brand GetByBrandId(int brandId)
+        {
+            return _brandDal.Get(b => b.BrandId == brandId);    
+        }
+
+        public void Update(Brand brand)
+        {
+            _brandDal.Update(brand);
         }
     }
 }

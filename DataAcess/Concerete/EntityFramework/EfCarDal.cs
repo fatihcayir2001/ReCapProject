@@ -1,5 +1,7 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entites.Concerete;
+using Entites.DTOs;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -9,61 +11,23 @@ using System.Text;
 
 namespace DataAccess.Concerete.EntityFramework
 {
-    public class EfCarDal : ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, CarProjectContex>, ICarDal
     {
-        public void Add(Car entity)
+        public List<CarDetailDto> GetCarDetails()
         {
             using (CarProjectContex contex = new CarProjectContex())
             {
-                if (entity.Description.Length >=2 && entity.DailyPrice>0 )
-                {
-                    var addedEntity = contex.Entry(entity);
-                    addedEntity.State = EntityState.Added;
-                    contex.SaveChanges();
-                }
-                else
-                {
-                    Console.WriteLine("Araba açıklaması 2 karakterden uzun ve günlük ücreti 0 dan büyük olmalıdır");
-                }
+                var result = from b in contex.Brands
+                             join c in contex.Cars
+                             on b.BrandId equals c.BrandId
+                             join color in contex.Colors
+                             on c.ColorId equals color.ColorId
+                             select new CarDetailDto() {Description=c.Description,ColorName=color.ColorName,BrandName=b.BrandName,DailyPrice=c.DailyPrice };
+                return result.ToList();
+                       
+                              
             }
 
-        }
-
-        public void Delete(Car entity)
-        {
-            using (CarProjectContex contex = new CarProjectContex())
-            {
-                var deletedEntity = contex.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                contex.SaveChanges();
-            }
-        }
-
-        public Car Get(Expression<Func<Car, bool>> filter)
-        {
-            using (CarProjectContex contex = new CarProjectContex())
-            {
-                return contex.Set<Car>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Car> GetAll(Expression<Func<Car, bool>> filter = null)
-        {
-            using (CarProjectContex contex = new CarProjectContex())
-            {
-                return filter == null ? contex.Set<Car>().ToList() :
-                    contex.Set<Car>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Car entity)
-        {
-            using (CarProjectContex contex = new CarProjectContex())
-            {
-                var updatedEntity = contex.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                contex.SaveChanges();
-            }
         }
     }
 }

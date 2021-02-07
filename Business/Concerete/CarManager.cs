@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entites.Concerete;
+using Entites.DTOs;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,42 +19,35 @@ namespace Business.Concerete
             _carDal = carDal;
         }
 
-
-        public void AddToDb(Car car)
+        public void Add(Car car)
         {
             _carDal.Add(car);
         }
 
-
-        public void DeleteFromDb(Car car)
+        public void Delete(Car car)
         {
             _carDal.Delete(car);
-        }
 
+        }
 
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
-            //var result = from c in Cars
-            //             join b in Brands
-                         //on b.BrandId equals c.BrandId;
-            
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public Car GetByCarId(int carId)
         {
-            return _carDal.GetAll(c => c.BrandId == brandId);
+            return _carDal.Get(c => c.CarId == carId);
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public List<CarDetailDto> GetCarDetails()
         {
-            return _carDal.GetAll(c => c.ColorId == colorId);
+            return _carDal.GetCarDetails();
         }
 
-        public void UpdateToDb(Car car)
+        public void Update(Car car)
         {
             _carDal.Update(car);
         }
-
     }
 }

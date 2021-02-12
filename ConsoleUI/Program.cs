@@ -21,7 +21,7 @@ namespace ConsoleUI
             //CarDeleteTest(carManager);
             //CarUpdateTest(carManager);
 
-            ListCars(carManager);
+            //ListCars(carManager);
 
         }
 

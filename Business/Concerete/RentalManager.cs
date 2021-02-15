@@ -63,5 +63,10 @@ namespace Business.Concerete
             _rentDal.Update(rental);
             return new SuccessResult(Messages.OperationSuccessful);
         }
+
+        public IDataResult<Rental> GetById(int id)
+        {
+            return new SuccessDataResult<Rental>(_rentDal.Get(r => r.Id == id));
+        }
     }
 }

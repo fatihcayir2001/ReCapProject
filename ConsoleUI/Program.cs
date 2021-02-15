@@ -23,11 +23,18 @@ namespace ConsoleUI
 
             //ListCars(carManager);
 
-        }
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+            var result1 = rentalManager.GetRentalDetails();
+            foreach (var car in result1.Data)
+            {
+                Console.WriteLine(car);
+            }
+
+;        }
 
         private static void ListCars(CarManager carManager)
         {
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
 
                 Console.WriteLine(" Model adı: {0}, Renk : {1} ,Fiyat: {3}, Model: {2}  ", car.BrandName, car.ColorName, car.Description, car.DailyPrice);
@@ -41,7 +48,7 @@ namespace ConsoleUI
             
 
             carManager.Update(new Entites.Concerete.Car { CarId = 1, ColorId = 3, BrandId = 2, ModelYear = 2005, Description = "Scania", DailyPrice = 5000 });
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
                 
                 Console.WriteLine(" Model adı: {0}, Renk : {1} , Açıklama: {2}  Fiyat: {3}", car.BrandName,car.ColorName,car.Description,car.DailyPrice);
@@ -54,7 +61,7 @@ namespace ConsoleUI
             Console.WriteLine("Silindikten Sonra");
             carManager.Delete(new Entites.Concerete.Car { CarId = 15 });
 
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
 
                 Console.WriteLine(" Model adı: {0}, Renk : {1} , Açıklama: {2}  Fiyat: {3}", car.BrandName, car.ColorName, car.Description, car.DailyPrice);
@@ -67,7 +74,7 @@ namespace ConsoleUI
             Console.WriteLine("Eklendikten sonra");
             carManager.Add(new Entites.Concerete.Car { Description = "Hyundai", ModelYear = 1999, DailyPrice = 5000, BrandId = 3, ColorId = 3 });
 
-            foreach (var car in carManager.GetCarDetails())
+            foreach (var car in carManager.GetCarDetails().Data)
             {
 
                 Console.WriteLine(" Model adı: {0}, Renk : {1} , Açıklama: {2}  Fiyat: {3}", car.BrandName, car.ColorName, car.Description, car.DailyPrice);

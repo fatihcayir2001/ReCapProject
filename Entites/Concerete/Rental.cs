@@ -5,9 +5,10 @@ using System.Text;
 
 namespace Entites.Concerete
 {
+    
     public class Rental:IEntity
     {
-        public int RentId { get; set; }
+        public int Id { get; set; }
         public int CarId { get; set; }
         public int CustomerId { get; set; }
         public DateTime RentDate { get; set; }

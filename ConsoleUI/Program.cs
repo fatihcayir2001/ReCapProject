@@ -24,14 +24,24 @@ namespace ConsoleUI
             //ListCars(carManager);
 
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
-            var result1 = rentalManager.GetRentalDetails();
-            foreach (var car in result1.Data)
-            {
-                Console.WriteLine(car);
-            }
+            //var result1 = rentalManager.GetRentalDetails();
+            //foreach (var car in result1.Data)
+            //{
+            //    Console.WriteLine(car.CustomerFirstName);
+            //}
+            
+            var result1 = rentalManager.GetById(5);
+            
+            result1.Data.RentDate = DateTime.Now;
+            result1.Data.CustomerId = 3;
+            result1.Data.CarId = 3;
+            var message =rentalManager.Update(result1.Data);
+            Console.WriteLine(message.Message);
 
-;        }
+            rentalManager.Delete(result1.Data);
+        }
 
+        
         private static void ListCars(CarManager carManager)
         {
             foreach (var car in carManager.GetCarDetails().Data)

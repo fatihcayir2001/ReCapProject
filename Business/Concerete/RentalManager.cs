@@ -22,13 +22,11 @@ namespace Business.Concerete
 
         public IResult Rent(Rental rental)
         {
-            var CarList = _rentDal.GetAll();
-            foreach (var Car in CarList)
+            var carToNotRent = _rentDal.Get(c => c.CarId == rental.CarId && (c.ReturnDate ==null || c.ReturnDate>DateTime.Now));
+
+            if (carToNotRent != null)
             {
-                if (Car.ReturnDate==null)
-                {
-                    return new ErrorResult("Üzgünüm araba kullanımda");
-                }
+                return new ErrorResult(Messages.OperationFailed);
             }
             _rentDal.Add(rental);
             return new SuccessResult(Messages.OperationSuccessful);

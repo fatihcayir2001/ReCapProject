@@ -9,24 +9,27 @@ using System.Linq;
 
 namespace DataAccess.Concerete.EntityFramework
 {
-    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarProjectContex>, IRentalDal
+    public class EfRentalDal : EfEntityRepositoryBase<Rental, CarProjectContext>, IRentalDal
     {
         public List<RentalDetailDto> GetRentalDetails()
         {
-            using (CarProjectContex contex = new CarProjectContex())
+            using (CarProjectContext context = new CarProjectContext())
             {
-                var result = from r in contex.Rentals
-                             join c in contex.Customers
+                var result = from r in context.Rentals
+                             join c in context.Customers
                              on r.CustomerId equals c.CustomerId
-                             join cars in contex.Cars
+                             join cars in context.Cars
                              on r.CarId equals cars.CarId
-                             join b in contex.Brands
+                             join b in context.Brands
                              on cars.BrandId equals b.BrandId
+                             join u in context.Users
+                             on c.UserId equals u.Id
+                             
                              select new RentalDetailDto()
                              {
                                  CarModel = b.BrandName,
-                                 CustomerFirstName=c.FirstName,
-                                 CustomerLastName=c.LastName,
+                                 CustomerFirstName=u.FirstName,
+                                 CustomerLastName=u.LastName,
                                  RentalId=r.Id,
                                  RentDate=r.RentDate,
                                  ReturnDate=r.ReturnDate

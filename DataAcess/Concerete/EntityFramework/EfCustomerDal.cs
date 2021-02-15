@@ -8,7 +8,7 @@ using System.Text;
 
 namespace DataAccess.Concerete.EntityFramework
 {
-    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarProjectContex>, ICustomerDal
+    public class EfCustomerDal : EfEntityRepositoryBase<Customer, CarProjectContext>, ICustomerDal
     {
         
     }

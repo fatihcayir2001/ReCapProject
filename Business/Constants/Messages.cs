@@ -21,5 +21,8 @@ namespace Business.Constants
         public static string ColorDeleted = "Renk silindi";
         public static string ColorUpdated = "Renk güncellendi";
         public static string ColorNameInvalid = "Renk adık 2 karaktedrden kısa olmamalı";
+        public static string OperationFailed = "Üzgünüm, Operasyon başarısız";
+        public static string OperationSuccessful = "Operasyon Başarılı";
+
     }
 }

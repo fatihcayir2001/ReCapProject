@@ -36,7 +36,9 @@ namespace WebAPI
             services.AddSingleton<ICarDal, EfCarDal>();
             services.AddSingleton<IRentalService, RentalManager>();
             services.AddSingleton<IRentalDal, EfRentalDal>();
-            
+            services.AddSingleton<IColorService, ColorManager>();
+            services.AddSingleton<IColorDal, EfColorDal>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Core.Aspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entites.Concerete;
@@ -20,16 +21,19 @@ namespace Business.Concerete
             _rentDal = rentDal;
         }
 
+        [ValidationAspect(typeof(RentalManager))]
         public IResult Rent(Rental rental)
         {
-            var carToNotRent = _rentDal.Get(c => c.CarId == rental.CarId && (c.ReturnDate ==null || c.ReturnDate>DateTime.Now));
+            //var carToNotRent = _rentDal.Get(c => c.CarId == rental.CarId && (c.ReturnDate ==null || c.ReturnDate>DateTime.Now));
 
-            if (carToNotRent != null)
-            {
-                return new ErrorResult(Messages.OperationFailed);
-            }
+            //if (carToNotRent != null)
+            //{
+            //    return new ErrorResult(Messages.OperationFailed);
+            //}
+            //_rentDal.Add(rental);
+            //return new SuccessResult(Messages.OperationSuccessful);
             _rentDal.Add(rental);
-            return new SuccessResult(Messages.OperationSuccessful);
+            return new Result(true,Messages.OperationSuccessful);
         }
 
         public IResult Delete(Rental rental)

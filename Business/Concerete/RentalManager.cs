@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -21,7 +22,7 @@ namespace Business.Concerete
             _rentDal = rentDal;
         }
 
-        [ValidationAspect(typeof(RentalManager))]
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Rent(Rental rental)
         {
             //var carToNotRent = _rentDal.Get(c => c.CarId == rental.CarId && (c.ReturnDate ==null || c.ReturnDate>DateTime.Now));

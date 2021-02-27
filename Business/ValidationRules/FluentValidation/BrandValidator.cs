@@ -8,7 +8,7 @@ namespace Business.ValidationRules.FluentValidation
 {
     public class BrandValidator:AbstractValidator<Brand>
     {
-        BrandValidator()
+        public BrandValidator()
         {
             RuleFor(b => b.BrandName.Length).GreaterThan(0);
         }

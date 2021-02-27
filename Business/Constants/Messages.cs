@@ -23,6 +23,7 @@ namespace Business.Constants
         public static string ColorNameInvalid = "Renk adık 2 karaktedrden kısa olmamalı";
         public static string OperationFailed = "Üzgünüm, Operasyon başarısız";
         public static string OperationSuccessful = "Operasyon Başarılı";
-
+        public static string ImagesLimitExceeded = "Maximum resim sayısı aşıldı";
+        public static string ImageAdded = "Resim başarıyla eklendi";
     }
 }

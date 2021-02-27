@@ -8,7 +8,7 @@ namespace Business.ValidationRules.FluentValidation
 {
     public class ColorValidator:AbstractValidator<Color>
     {
-        ColorValidator()
+        public ColorValidator()
         {
             RuleFor(r => r.ColorName.Length).GreaterThan(10);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using System.Text;
 
 namespace Business.Constants
@@ -25,5 +26,6 @@ namespace Business.Constants
         public static string OperationSuccessful = "Operasyon Başarılı";
         public static string ImagesLimitExceeded = "Maximum resim sayısı aşıldı";
         public static string ImageAdded = "Resim başarıyla eklendi";
+        public static string AuthorizationDenied = "Erişim izniniz yoktur.";
     }
 }

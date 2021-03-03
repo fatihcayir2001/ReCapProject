@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Business.BusinessAspects.Autofac;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac;
 
 namespace Business.Concerete
 {
@@ -20,7 +23,9 @@ namespace Business.Concerete
         {
             _carDal = carDal;
         }
-
+        
+        [SecuredOperation("admin,car.add")]
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
             if (car.ModelYear<2000)

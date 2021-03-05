@@ -9,6 +9,7 @@ using DataAccess.Concerete.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Core.Utilities.Security.JWT;
 
 namespace Business.DependencyResolvers.Autofac
 {
@@ -22,8 +23,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<RentalManager>().As<IRentalService>();
             builder.RegisterType<CarImageManager>().As<ICarImageService>();
             builder.RegisterType<FileManager>().As<IFileProcess>();
-            
-            
+            builder.RegisterType<UserManager>().As<IUserService>();
+            builder.RegisterType<AuthManager>().As<IAuthService>();
+
+
+
+
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>();
+            builder.RegisterType<EfUserDal>().As<IUserDal>();
             builder.RegisterType<EfCarImageDal>().As<ICarImageDal>();
             builder.RegisterType<EfCarDal>().As<ICarDal>();
             builder.RegisterType<EfUserDal>().As<IUserDal>();

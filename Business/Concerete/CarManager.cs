@@ -47,7 +47,9 @@ namespace Business.Concerete
             return new Result(true, Messages.CarDeleted);
 
         }
-
+        
+        [SecuredOperation("admin")]
+        [ValidationAspect(typeof(CarValidator))]
         public IDataResult<List<Car>> GetAll()
         {
             if (DateTime.Now.Hour == 11)
@@ -58,7 +60,7 @@ namespace Business.Concerete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
 
         }
-
+        [SecuredOperation("admin")]
         public IDataResult<Car> GetByCarId(int carId)
         {
             return new SuccessDataResult<Car>(_carDal.Get(c => c.CarId == carId), Messages.CarListed);

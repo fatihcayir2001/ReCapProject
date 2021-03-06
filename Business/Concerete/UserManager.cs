@@ -52,7 +52,7 @@ namespace Business.Concerete
 
         public IDataResult<User> GetByEmail(string email)
         {
-            return new SuccessDataResult<User>(_userDal.Get(x => x.Email == email));
+            return new DataResult<User>(_userDal.Get(x => x.Email == email),true);
         }
     }
 }

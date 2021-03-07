@@ -9,9 +9,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Transactions;
 using Business.BusinessAspects.Autofac;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
+using Core.CrossCuttingConcerns.Transaction;
 
 namespace Business.Concerete
 {
@@ -23,7 +27,8 @@ namespace Business.Concerete
         {
             _carDal = carDal;
         }
-        
+
+        [CacheRemoveAspect("ICarService.Get")]
         [SecuredOperation("admin,car.add")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
@@ -48,6 +53,7 @@ namespace Business.Concerete
 
         }
         
+        [CacheAspect]
         [SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IDataResult<List<Car>> GetAll()
@@ -60,6 +66,8 @@ namespace Business.Concerete
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarListed);
 
         }
+
+        [CacheAspect]
         [SecuredOperation("admin")]
         public IDataResult<Car> GetByCarId(int carId)
         {
@@ -71,6 +79,21 @@ namespace Business.Concerete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails()) ;
         }
 
+        [TransactionScopeAspect]
+        public IResult AddTransactionalTest(Car car)
+        {
+            Add(car);
+            if (car.DailyPrice>10)
+            {
+                throw new Exception();
+            }
+
+            Add(car);
+            return null;
+        }
+
+        [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("IProductService.Get")]//IProductService.Get key li tüm cachi sil
         public IResult Update(Car car)
         {
             if (car.ModelYear < 2000)

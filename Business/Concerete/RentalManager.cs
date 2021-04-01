@@ -54,7 +54,8 @@ namespace Business.Concerete
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentDal.GetRentalDetails(), Messages.OperationSuccessful);
+            var result = _rentDal.GetRentalDetails();
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.OperationSuccessful);
         }
 
         public IResult Update(Rental rental)

@@ -25,7 +25,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<FileManager>().As<IFileProcess>();
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<AuthManager>().As<IAuthService>();
-
+            builder.RegisterType<CustomerManager>().As<ICustomerService>();
 
 
 
@@ -38,6 +38,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>();
             builder.RegisterType<EfColorDal>().As<IColorDal>();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>();
+            builder.RegisterType<EfCustomerDal>().As<ICustomerDal>();
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

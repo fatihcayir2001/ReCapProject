@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Transactions;
 using Business.BusinessAspects.Autofac;
@@ -15,7 +16,6 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac;
 using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
-using Core.CrossCuttingConcerns.Transaction;
 
 namespace Business.Concerete
 {
@@ -41,6 +41,7 @@ namespace Business.Concerete
             return new Result(true, Messages.CarAdded);
             
         }
+        [CacheRemoveAspect("ICarService.Get")]
 
         public IResult Delete(Car car)
         {
@@ -54,7 +55,7 @@ namespace Business.Concerete
         }
         
         [CacheAspect]
-        [SecuredOperation("admin")]
+        //[SecuredOperation("admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IDataResult<List<Car>> GetAll()
         {
@@ -92,6 +93,24 @@ namespace Business.Concerete
             return null;
         }
 
+        public IDataResult<List<CarDetailDto>> GetByBrandId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.BrandId == id));
+        }
+
+        public IDataResult<List<CarDetailDto>> GetByColorId(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c => c.ColorId==id));
+
+        }
+
+        public IDataResult<List<CarDetailDto>> GetCarsByBrandAndColorId(int brandId, int colorId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c =>
+                c.BrandId == brandId && c.ColorId == colorId));
+        }
+
+
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("IProductService.Get")]//IProductService.Get key li tüm cachi sil
         public IResult Update(Car car)
@@ -103,5 +122,12 @@ namespace Business.Concerete
             _carDal.Add(car);
             return new Result(true, Messages.CarUpdated);
         }
+
+        public IDataResult<List<CarDetailDto>> GetCarDetailsById(int carId)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(x => x.CarId == carId));
+        }
+
+        
     }
 }

@@ -9,6 +9,7 @@ using Entites.Concerete;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace Business.Concerete
@@ -29,30 +30,43 @@ namespace Business.Concerete
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(int id, IFormFile files)
         {
+            FileInfo fi = new FileInfo(files.FileName);
             IResult result = BusinessRules.Run(CheckIfMaxImageLimitExceeded(id), CheckTheCarExists(id));
             if (result != null)
             {
                 return new SuccessResult("Operasyon başarılı");
             }
 
-            string FileName = Guid.NewGuid().ToString();
+            string fileName = Guid.NewGuid().ToString();
+            string fullFileName = fileName + fi.Extension;
             CarImage carImg = new CarImage
             {
                 CarId = id,
                 Date = DateTime.UtcNow,
-                ImagePath = FileName
+                ImagePath = fullFileName
             };
             _carImageDal.Add(carImg);
-            var fileResult = fileProcess.Upload(FileName, files);
-            return new SuccessResult();
+            var fileResult = fileProcess.Upload(fullFileName, files);
+            if (fileResult.IsCompletedSuccessfully)
+            {
+                return new SuccessResult();
+            }
+
+            return new ErrorResult();
         }
 
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Delete(int id)
         {
             var result = _carImageDal.Get(c => c.Id == id);
+            var fileResult = fileProcess.Delete(result.ImagePath);
             _carImageDal.Delete(result);
-            return new SuccessResult(Messages.OperationSuccessful);
+            if (fileResult.Success)
+            {
+                return new SuccessResult(Messages.OperationSuccessful);
+            }
+
+            return new ErrorResult(Messages.OperationFailed);
         }
 
         public IDataResult<List<CarImage>> GetAll()
@@ -61,9 +75,15 @@ namespace Business.Concerete
             return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll());
         }
 
-        public IDataResult<CarImage> GetById(int Id)
+        public IDataResult<List<CarImage>> GetByCarId(int carId)
         {
-            return new SuccessDataResult<CarImage>(_carImageDal.Get(c=>c.Id==Id));
+
+            return new SuccessDataResult<List<CarImage>>(_carImageDal.GetAll(c => c.CarId == carId));
+        }
+
+        public IDataResult<CarImage> GetById(int id)
+        {
+            return new SuccessDataResult<CarImage>(_carImageDal.Get(c=>c.Id==id));
         }
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(int id)

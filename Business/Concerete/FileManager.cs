@@ -15,12 +15,9 @@ namespace Business.Concerete
     {
         private readonly IHostingEnvironment environment;
         string FileDirectory;
+        private static string _currentDirectory = Environment.CurrentDirectory + "\\wwwroot";
+        private static string _folderName = "\\Images\\";
 
-        public FileManager(IHostingEnvironment environment)
-        {
-            this.environment = environment;
-            FileDirectory = environment.ContentRootPath + "/images/";
-        }
         /// <summary>
         /// Upload to server's assets folder
         /// </summary>
@@ -29,11 +26,19 @@ namespace Business.Concerete
         /// <returns></returns>
         public async Task<IResult> Upload(string fileName, IFormFile file)
         {
-            using (var fileStream = new FileStream(Path.Combine(FileDirectory, fileName.ToString() + ".png"), FileMode.Create, FileAccess.Write))
+            
+
+            CheckDirectoryExists(_currentDirectory+_folderName);
+            CreateImageFile(_currentDirectory+_folderName+fileName,file);
+            var result = new SuccessResult((_folderName + fileName).Replace("\\", "/"));
+            if (result.Success==true)
             {
-                await file.CopyToAsync(fileStream);
+                return result;
             }
-            return new SuccessResult();
+
+            return new ErrorResult("Yükleme başarısız, file manageri kontrol edin");
+
+
         }
         /// <summary>
         /// Delete file from given path
@@ -49,5 +54,34 @@ namespace Business.Concerete
             }
             return new SuccessResult();
         }
+
+
+        private static void CreateImageFile(string directory, IFormFile file)
+        {
+            using (FileStream fs = File.Create(directory))
+            {
+                file.CopyTo(fs);
+                fs.Flush();
+            }
+        }
+
+        private static void CheckDirectoryExists(string directory)
+        {
+            if (!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+            }
+        }
+
+        private static IResult CheckFileTypeValid(string type)
+        {
+            if (type != ".jpeg" && type != ".png" && type != ".jpg")
+            {
+                return new ErrorResult("Wrong file type.");
+            }
+            return new SuccessResult();
+        }
     }
+
+
 }

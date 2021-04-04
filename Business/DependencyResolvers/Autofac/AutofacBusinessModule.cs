@@ -26,7 +26,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>();
             builder.RegisterType<AuthManager>().As<IAuthService>();
             builder.RegisterType<CustomerManager>().As<ICustomerService>();
-
+            builder.RegisterType<CreditCardManager>().As<ICreditCardService>();
 
 
             builder.RegisterType<JwtHelper>().As<ITokenHelper>();
@@ -39,7 +39,7 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EfColorDal>().As<IColorDal>();
             builder.RegisterType<EfRentalDal>().As<IRentalDal>();
             builder.RegisterType<EfCustomerDal>().As<ICustomerDal>();
-
+            builder.RegisterType<EfCreditCardDal>().As<ICreditCardDal>();
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

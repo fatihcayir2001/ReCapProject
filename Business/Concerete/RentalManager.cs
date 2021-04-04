@@ -72,5 +72,17 @@ namespace Business.Concerete
         {
             return new SuccessDataResult<Rental>(_rentDal.Get(r => r.Id == id));
         }
+
+
+        public IResult IsRentable(Rental rental)
+        {
+            var result = _rentDal.GetAll();
+            if (result.Where(r => r.CarId == rental.CarId
+                                  && r.ReturnDate >= rental.RentDate
+                                  && r.RentDate <= rental.ReturnDate).Any())
+                return new ErrorResult(Messages.RentalInValid);
+            return new SuccessResult(Messages.CarIsRentable);
+        }
+
     }
 }

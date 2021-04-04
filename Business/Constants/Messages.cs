@@ -33,5 +33,10 @@ namespace Business.Constants
         public static string SuccessfulLogin="Giriş başarılı";
         public static string PasswordError="Şifre hatalı";
         public static string UserNotFound="Üye bulunamadı";
+        public static string PaymentSuccessful = "Ödeme Başarılı";
+        public static string PaymentFailed = "Ödeme Başarısız";
+
+        public static string RentalInValid = "Kiralama geçersiz";
+        public static string CarIsRentable = "Kiralama geçerli";
     }
 }
